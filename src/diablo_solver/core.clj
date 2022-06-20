@@ -1,7 +1,7 @@
 (ns diablo-solver.core)
 
 (defn solved? [state]
-  (every? true? state))
+  (every? true? (:state state)))
 
 (def transitions
   {0 [0 1 3]
@@ -24,14 +24,18 @@
 
 (defn solve
   ([current-state]
-   (solve [{:state current-state :steps []}] 1))
+   (solve [{:state current-state :steps []}] 3))
+
   ([states max-depth]
-   (prn :states)
-   (doseq [state states]
-     (prn :state state))
-   (if-let [solution (first (map solved? (map :state states)))]
+   ;(prn :states)
+   ;(doseq [state states]
+   ;  (prn :state state))
+
+   (if-let [solution (first (filter solved? states))]
      (:steps solution)
      (if (zero? max-depth)
        :no-solution-found
-       (solve (mapcat #(map (partial apply-transition %) transitions) states)
+       (solve (mapcat #(map (partial apply-transition %)
+                            (keys transitions))
+                      states)
               (dec max-depth))))))

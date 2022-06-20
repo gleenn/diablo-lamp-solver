@@ -35,8 +35,8 @@
           0))))
 
 (deftest solved?-test
-  (is (not (solved? [true true true true true false true false false])))
-  (is (solved? [true true true true true true true true true])))
+  (is (not (solved? {:state [true true true true true false true false false]})))
+  (is (solved? {:state [true true true true true true true true true]})))
 
 (deftest solve-test
   (is (= :no-solution-found
@@ -45,7 +45,19 @@
                           true false false]
                   :steps []}]
                 0)))
+  (is (= []
+         (solve [true true true
+                 true true true
+                 true true true])))
   (is (= [8]
          (solve [true true true
                  true true false
-                 true false false]))))
+                 true false false])))
+  (is (= [0 8]
+         (solve [false false true
+                 false true false
+                 true false false])))
+  (is (= [0 4 8]
+         (solve [false true true
+                 true false true
+                 true true false]))))
