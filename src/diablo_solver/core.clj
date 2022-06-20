@@ -15,6 +15,7 @@
    8 [8 5 7]})
 
 (defn apply-transition [state transition]
+  {:pre [(map? state) (transitions transition)]}
   (-> state
       (update :state #(reduce (fn [state toggle-index]
                                 (update state toggle-index not))
@@ -24,7 +25,7 @@
 
 (defn solve
   ([current-state]
-   (solve [{:state current-state :steps []}] 3))
+   (solve [{:state current-state :steps []}] 20))
 
   ([states max-depth]
    ;(prn :states)
@@ -39,3 +40,19 @@
                             (keys transitions))
                       states)
               (dec max-depth))))))
+
+(defn print-state [state]
+  (doseq [row (partition-all 3 (:state state))]
+    (println row)))
+
+(defn apply-transitions [state transitions]
+  (reduce (fn [state transition]
+            (apply-transition state transition))
+          state
+          transitions))
+
+(defn generate-state-transitions [current-state]
+  (let [solution (solve current-state)]
+    (for [step-index (range (count solution))]
+      {:apply-step (solution step-index)
+       :new-state  (apply-transitions current-state (take (inc step-index) solution))})))

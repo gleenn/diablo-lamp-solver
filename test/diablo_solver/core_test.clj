@@ -60,4 +60,28 @@
   (is (= [0 4 8]
          (solve [false true true
                  true false true
-                 true true false]))))
+                 true true false])))
+
+  (is (= [0 4 8]
+         (solve [false true true
+                 true false true
+                 true true false])))
+
+  (is (= [0 4 6 2 8]
+         (solve [false false false
+                 false false false
+                 false false false])))
+
+  #_(is (= [0 4 6 2 8]
+           (solve [false false false true true true true true false])))
+
+  #_(is (solve [false false false true true true true true false])))
+
+#_(deftest generate-state-transitions-test
+  (is (= [{:apply-step 8
+           :new-state [true true true
+                       true true true
+                       true true true]}]
+         (generate-state-transitions {:state [true true true
+                                              true true false
+                                              true false false]}))))
